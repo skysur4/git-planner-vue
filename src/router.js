@@ -4,6 +4,7 @@ import Index from "./views/Index.vue";
 import Landing from "./views/Landing.vue";
 import Login from "./views/Login.vue";
 import Profile from "./views/Profile.vue";
+import Test from "./views/Test.vue";
 import MainNavbar from "./layout/MainNavbar.vue";
 import MainFooter from "./layout/MainFooter.vue";
 
@@ -47,6 +48,15 @@ export default new Router({
       components: { default: Profile, header: MainNavbar, footer: MainFooter },
       props: {
         header: { colorOnScroll: 400 },
+        footer: { backgroundColor: "black" }
+      }
+    },
+    {
+      path: "/test",
+      name: "test",
+      components: { default: Test, header: MainNavbar, footer: MainFooter },
+      props: {
+        header: { colorOnScroll: 200 },
         footer: { backgroundColor: "black" }
       }
     }

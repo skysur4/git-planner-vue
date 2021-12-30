@@ -10,6 +10,10 @@ import MainFooter from "./layout/MainFooter.vue";
 Vue.use(Router);
 
 export default new Router({
+  mode: "history",
+  hash: false,
+  base: process.env.CONTEXT_PATH,
+  fallback: Index,
   routes: [
     {
       path: "/",
@@ -45,7 +49,8 @@ export default new Router({
         header: { colorOnScroll: 400 },
         footer: { backgroundColor: "black" }
       }
-    }
+    },
+    { path: "*", redirect: "/" }
   ],
   scrollBehavior: to => {
     if (to.hash) {

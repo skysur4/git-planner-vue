@@ -1,4 +1,5 @@
 module.exports = {
+  publicPath: process.env.VUE_APP_CONTEXT_PATH,
   devServer: {
     port: 3000,
     disableHostCheck: true

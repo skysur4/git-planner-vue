@@ -12,7 +12,7 @@ Vue.use(Router);
 export default new Router({
   mode: "history",
   hash: false,
-  base: process.env.CONTEXT_PATH,
+  base: process.env.VUE_APP_CONTEXT_PATH,
   fallback: Index,
   routes: [
     {
@@ -49,8 +49,7 @@ export default new Router({
         header: { colorOnScroll: 400 },
         footer: { backgroundColor: "black" }
       }
-    },
-    { path: "*", redirect: "/" }
+    }
   ],
   scrollBehavior: to => {
     if (to.hash) {

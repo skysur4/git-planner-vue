@@ -18,9 +18,12 @@ import router from "./router";
 
 import MaterialKit from "./plugins/material-kit";
 
+import { Modal } from "./components/Modal";
+
 Vue.config.productionTip = false;
 
 Vue.use(MaterialKit);
+Vue.component(Modal);
 
 const NavbarStore = {
   showNavbar: false

@@ -1,9 +1,7 @@
 <template>
   <div class="wrapper">
     <parallax
-      class="section page-header header-filter"
-      :style="headerStyle"
-    ></parallax>
+      class="section page-header header-filter" :style="headerStyle"></parallax>
     <div class="main main-raised">
       <div class="section profile-content">
         <div class="container">
@@ -12,35 +10,32 @@
               <div class="profile">
                 <div class="avatar">
                   <img
-                    :src="userInfo.avatar_url"
+                    :src="this.$coreData.userInfo.avatar_url"
                     alt="Circle Image"
                     class="img-raised rounded-circle img-fluid"
                   />
                 </div>
                 <div class="name">
-                  <h3 class="title">{{userInfo.name}}</h3>
-                  <h6>{{userInfo.login}}</h6>
-                  <md-button
-                    href="javascript:void(0)"
-                    class="md-just-icon md-simple md-dribbble"
-                    ><i class="fab fa-github"></i
-                  ></md-button>
+                  <h3 class="title">{{this.$coreData.userInfo.name}}</h3>
+                  <h6><img alt="GitHub last commit" :src="commitBadge"/></h6>
+
+                  <md-button class="md-simple md-dribbble"><img alt="GitHub follower" :src="followerBadge" /></md-button>
+                  <md-button class="md-simple md-dribbble"><img alt="GitHub stars" :src="starBadge" /></md-button>
+
+				<!--a href=""><img src="https://shields.io//github/forks/{{this.$coreData.userInfo.login}}/:repo?label=Fork" /></a>
+				<a href=""><img src="https://shields.io//github/stars/{{this.$coreData.userInfo.login}}/:repo?style=social" /></a>
+				<a href=""><img src="https://shields.io//github/watchers/{{this.$coreData.userInfo.login}}/:repo?label=Watch" /></a-->
                 </div>
               </div>
             </div>
           </div>
           <div class="description text-center">
-            <p>{{userInfo.bio}}
-              An artist of considerable range, Chet Faker — the name taken by
-              Melbourne-raised, Brooklyn-based Nick Murphy — writes, performs
-              and records all of his own music, giving it a warm, intimate feel
-              with a solid groove structure.
-            </p>
+            <p>{{this.$coreData.userInfo.bio}}</p>
           </div>
           <div class="profile-tabs">
             <tabs
-              :tab-name="['Studio', 'Work', 'Favorite']"
-              :tab-icon="['camera', 'palette', 'favorite']"
+              :tab-name="['To-do', 'New', 'Favorite']"
+              :tab-icon="['list', 'star', 'favorite']"
               plain
               nav-pills-icons
               color-button="success"
@@ -49,38 +44,45 @@
               <template slot="tab-pane-1">
                 <div class="md-layout">
                   <div class="md-layout-item md-size-25 ml-auto">
-                    <img :src="tabPane1[0].image" class="rounded" />
-                    <img :src="tabPane1[1].image" class="rounded" />
+                  	<h6>title</h6>12345 2345234 2345
+                  	<h6>title</h6>12345 2345234 2345 52345234 5 2345 3245 2345 324 5 3245 32 45 3
+                  	<h6>title</h6>12345 2345234 2345
+                  	<h6>title</h6>12345 2345234 2345
                   </div>
                   <div class="md-layout-item md-size-25 mr-auto">
-                    <img :src="tabPane1[3].image" class="rounded" />
-                    <img :src="tabPane1[2].image" class="rounded" />
+                    <h6>title</h6><a href="">12345 2345234 2345</a>
+                    <h6>title</h6><a href="">12345 2345234 2345</a>
+                    <h6>title</h6><a href="">12345 2345234 2345 345 32 45 23 4  523 45 23 4 5ojiepr jpfo j3p2o4ij po4ij poi 3j2p4oij</a>
                   </div>
                 </div>
               </template>
               <template slot="tab-pane-2">
                 <div class="md-layout">
                   <div class="md-layout-item md-size-25 ml-auto">
-                    <img :src="tabPane2[0].image" class="rounded" />
-                    <img :src="tabPane2[1].image" class="rounded" />
-                    <img :src="tabPane2[2].image" class="rounded" />
+                  	<h6>title</h6>12345 2345234 2345
+                  	<h6>title</h6>12345 2345234 2345 52345234 5 2345 3245 2345 324 5 3245 32 45 3
+                  	<h6>title</h6>12345 2345234 2345
+                  	<h6>title</h6>12345 2345234 2345
                   </div>
                   <div class="md-layout-item md-size-25 mr-auto">
-                    <img :src="tabPane2[3].image" class="rounded" />
-                    <img :src="tabPane2[4].image" class="rounded" />
+                    <h6>title</h6><a href="">12345 2345234 2345</a>
+                    <h6>title</h6><a href="">12345 2345234 2345</a>
+                    <h6>title</h6><a href="">12345 2345234 2345 345 32 45 23 4  523 45 23 4 5ojiepr jpfo j3p2o4ij po4ij poi 3j2p4oij</a>
                   </div>
                 </div>
               </template>
               <template slot="tab-pane-3">
                 <div class="md-layout">
                   <div class="md-layout-item md-size-25 ml-auto">
-                    <img :src="tabPane3[0].image" class="rounded" />
-                    <img :src="tabPane3[1].image" class="rounded" />
+                  	<h6>title</h6>12345 2345234 2345
+                  	<h6>title</h6>12345 2345234 2345 52345234 5 2345 3245 2345 324 5 3245 32 45 3
+                  	<h6>title</h6>12345 2345234 2345
+                  	<h6>title</h6>12345 2345234 2345
                   </div>
                   <div class="md-layout-item md-size-25 mr-auto">
-                    <img :src="tabPane3[2].image" class="rounded" />
-                    <img :src="tabPane3[3].image" class="rounded" />
-                    <img :src="tabPane3[4].image" class="rounded" />
+                    <h6>title</h6><a href="">12345 2345234 2345</a>
+                    <h6>title</h6><a href="">12345 2345234 2345</a>
+                    <h6>title</h6><a href="">12345 2345234 2345 345 32 45 23 4  523 45 23 4 5ojiepr jpfo j3p2o4ij po4ij poi 3j2p4oij</a>
                   </div>
                 </div>
               </template>
@@ -94,9 +96,6 @@
 
 <script>
 import { Tabs } from "@/components";
-
-import github from "@/var/github";
-import authUtils from "@/plugins/authentications";
 
 export default {
 	components: {
@@ -125,53 +124,123 @@ export default {
 	      { image: require("@/assets/img/examples/olu-eletu.jpg") },
 	      { image: require("@/assets/img/examples/studio-1.jpg") }
 	    ],
-
-	    token: null,
-	    userInfo: {},
 	  };
 	},
 	props: {
 	  header: {
 	    type: String,
-	    default: require("@/assets/img/city-profile.jpg")
+	    default: require("@/assets/img/pretty-1.jpg")
 	  },
-	  img: {
-	    type: String,
-	    default: require("@/assets/img/faces/christian.jpg")
-	  }
 	},
 	computed: {
 	  headerStyle() {
 	    return {
 	      backgroundImage: `url(${this.header})`
 	    };
-	  }
+	  },
+	  followerBadge() {
+		return `https://shields.io/github/followers/${this.$coreData.userInfo.login}?label=Follow&style=social`
+	  },
+	  starBadge() {
+		return `https://shields.io/github/stars/${this.$coreData.userInfo.login}?affiliations=OWNER%2CCOLLABORATOR&style=social`
+	  },
+	  commitBadge() {
+		return `https://shields.io/github/last-commit/${this.$coreData.userInfo.login}/${process.env.VUE_APP_DATA_REPOSITORY}?label=${this.$coreData.userInfo.login}&style=social&logo=github`
+	  },
 	},
 	methods: {
-		getUserInfo() {
-			this.token = authUtils.getAuthToken();
-			if(!this.token){
-				window.history.back();
-			} else {
-				fetch(github.api.profile,
+		getRepository() {
+			debugger;
+			if(this.isAuthenticated()){
+				const url = this.github.api.getRepo(this.$coreData.userInfo.login);
+
+				fetch(url,
 			  		{
 			  			method: "GET",
-			  			headers: github.api.header(this.token),
+			  			headers: this.github.api.header(this.$coreData.token),
 			  		}
-			  	).then(res => res.json()
-			  	).then(data => {
+			  	).then(res => {
+				    if (res.ok) {
+				        return res.json();
+				    } else {
+						const err = new Error("HTTP error...");
+				        err.res = res;
+				        throw err;
+				    }
+				}).then(data => {
 					console.log(data);
-					this.userInfo = data;
+					this.setRepoInfo(data);
 			  	}).catch(err => {
+					console.log(err);
 			  		//alert(this.props.t('alert.authentication') + this.props.t('alert.error') + ": [" + err +"]");
-			  		alert("사용자 정보 조회 실패");
+			  		if(confirm("데이터 저장소 조회\n새로 만들까?")){
+						this.createRespository();
+					}
 				});
 			}
 		},
+
+		getPlannerData() {
+			if(this.isAuthenticated()){
+				const url = this.github.getTree(this.$coreData.userInfo.login, this.repoInfo.default_branch);
+
+				fetch(url,
+			  		{
+			  			method: "GET",
+			  			headers: this.github.api.header(this.$coreData.token),
+			  		}
+			  	).then(res => {
+				    if (res.ok) {
+				        return res.json();
+				    } else {
+						const err = new Error("HTTP error...");
+				        err.res = res;
+				        throw err;
+				    }
+				}).then(data => {
+					console.log(data);
+					this.setPlannerData(data);
+					//default_branch
+					//trees_url: "https://api.github.com/repos/skysur4/planner-data/git/trees{/sha}"
+			  	}).catch(err => {
+					console.log(err);
+			  		//alert(this.props.t('alert.authentication') + this.props.t('alert.error') + ": [" + err +"]");
+			  		alert("데이터 저장소 생성 실패\n나중에 다시 시도");
+				});
+			}
+		},
+
+		createRespository() {
+			if(this.isAuthenticated()){
+				fetch(this.github.api.createRepo,
+			  		{
+			  			method: "POST",
+			  			headers: this.github.api.header(this.$coreData.token),
+			  			body: this.github.body(this.github.api.createRepoParams),
+			  		}
+			  	).then(res => {
+				    if (res.ok) {
+				        return res.json();
+				    } else {
+						const err = new Error("HTTP error...");
+				        err.res = res;
+				        throw err;
+				    }
+				}).then(data => {
+					alert("데이터 저장소 생성 성공");
+					this.getRepository();
+			  	}).catch(err => {
+					console.log(err);
+			  		//alert(this.props.t('alert.authentication') + this.props.t('alert.error') + ": [" + err +"]");
+			  		alert("데이터 저장소 생성 실패\n나중에 다시 시도");
+				});
+			}
+		},
+
 	},
 
 	mounted() {
-		this.getUserInfo();
+		this.getRepository();
 	},
 };
 </script>

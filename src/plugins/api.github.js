@@ -1,3 +1,6 @@
+const dataRepo = process.env.VUE_APP_DATA_REPOSITORY;
+const githubApiUrl = process.env.VUE_APP_GIT_API_URL;
+
 const github = {
   authentication: "https://github.com/login/oauth/authorize",
   authroization: "/api/github/authorize",
@@ -6,16 +9,19 @@ const github = {
   cId: "f3062111e6c4986874b7",
 
   api: {
-    profile: "https://api.github.com/user",
-    createRepo: "/user/repos",
+    profile: githubApiUrl + "/user",
+    createRepo: githubApiUrl + "/user/repos",
     createRepoParams: {
-      name: "gitplanner-data",
+      name: dataRepo,
       description: "깃플래너용 데이터 리포지토리",
       private: true,
       auto_init: true
     },
-    getRepo: owner => {
-      return "/repos/{owner}/gitplanner-data".replace("{owner}", owner);
+    getRepo: function(owner) {
+      return githubApiUrl + "/repos/" + owner + "/" + dataRepo;
+    },
+    getTree: function(owner, branch) {
+      return githubApiUrl + "/repos/" + owner + "/" + dataRepo + "/git/trees/" + branch;
     },
     header: token => {
       return {

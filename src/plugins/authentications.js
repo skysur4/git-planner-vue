@@ -26,6 +26,10 @@ const getAuthToken = () => {
     : token;
 };
 
+const resetToken = () => {
+  window.localStorage.removeItem("token");
+};
+
 const createStateCode = () => {
   return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
     (
@@ -40,6 +44,7 @@ const authUtils = {
   getAuthState,
   setAuthToken,
   getAuthToken,
+  resetToken,
   createStateCode
 };
 

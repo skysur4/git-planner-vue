@@ -204,3 +204,7 @@
   width: 15%;
   left: -11px;
 }
+
+.clickable {
+	cursor: pointer;
+}

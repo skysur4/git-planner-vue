@@ -144,14 +144,13 @@ export default {
 					method: "GET",
 		  			headers: this.github.api.header(this.$coreData.token),
 		  			success: data => {
-						this.userInfo = data;
 						this.showModal("알림", "인증이 완료되었습니다", function(){return this.moveTo("profile");});
 					},
 					fail: err => {
 						this.authUtils.resetToken();
 					}
 				}
-				const result = this.gpFetch(params);
+				this.$coreData.userInfo = this.gpFetch(params);
 
 			}
 		},

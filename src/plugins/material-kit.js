@@ -8,6 +8,7 @@ import globalComponents from "./globalComponents";
 import VueLazyload from "vue-lazyload";
 import VueCarousel from "vue-carousel";
 
+
 export default {
   install(Vue) {
     Vue.use(VueMaterial);

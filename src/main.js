@@ -15,15 +15,32 @@
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
+//import store from "@store";
 
 import MaterialKit from "./plugins/material-kit";
 
-import { Modal } from "./components/Modal";
-
 Vue.config.productionTip = false;
 
+//Vue.prototype.$token = "";
+//Vue.prototype.$userInfo = {};
+//Vue.prototype.$repoInfo = {};
+//Vue.prototype.$plannerData = {};
+
+Vue.prototype.$coreData = Vue.observable({
+  token: "",
+  userInfo: {},
+  repoInfo: {},
+  plannerData: {}
+});
+
+let globalData = new Vue({
+  $token: "",
+  $userInfo: {},
+  $repoInfo: {},
+  $plannerData: {}
+});
+
 Vue.use(MaterialKit);
-Vue.component(Modal);
 
 const NavbarStore = {
   showNavbar: false
@@ -32,7 +49,8 @@ const NavbarStore = {
 Vue.mixin({
   data() {
     return {
-      NavbarStore
+      NavbarStore,
+      globalData
     };
   }
 });

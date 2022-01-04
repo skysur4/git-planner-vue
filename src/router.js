@@ -1,25 +1,27 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Index from "./views/Index.vue";
+import Sample from "./views/Sample.vue";
+
+import Home from "./views/Home.vue";
 import Landing from "./views/Landing.vue";
 import Login from "./views/Login.vue";
 import Profile from "./views/Profile.vue";
-import Test from "./views/Test.vue";
 import MainNavbar from "./layout/MainNavbar.vue";
 import MainFooter from "./layout/MainFooter.vue";
 
+import PageNotFound from "./views/PageNotFound.vue";
 Vue.use(Router);
 
 export default new Router({
   mode: "history",
   hash: false,
   base: process.env.VUE_APP_CONTEXT_PATH,
-  fallback: Index,
+  fallback: Home,
   routes: [
     {
       path: "/",
-      name: "index",
-      components: { default: Index, header: MainNavbar, footer: MainFooter },
+      name: "home",
+      components: { default: Home, header: MainNavbar, footer: MainFooter },
       props: {
         header: { colorOnScroll: 400 },
         footer: { backgroundColor: "black" }
@@ -52,14 +54,15 @@ export default new Router({
       }
     },
     {
-      path: "/test",
-      name: "test",
-      components: { default: Test, header: MainNavbar, footer: MainFooter },
+      path: "/sample",
+      name: "sample",
+      components: { default: Sample, header: MainNavbar, footer: MainFooter },
       props: {
-        header: { colorOnScroll: 200 },
+        header: { colorOnScroll: 400 },
         footer: { backgroundColor: "black" }
       }
-    }
+    },
+    { path: "*", component: PageNotFound }
   ],
   scrollBehavior: to => {
     if (to.hash) {

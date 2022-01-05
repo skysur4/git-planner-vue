@@ -23,7 +23,6 @@ import MaterialKit from "./plugins/material-kit";
 Vue.config.productionTip = false;
 
 Vue.use(MaterialKit);
-Vue.use(Vuex);
 
 const NavbarStore = {
   showNavbar: false,
@@ -38,7 +37,28 @@ Vue.mixin({
   }
 });
 
+Vue.use(Vuex);
+const store = new Vuex.Store({
+  state: {
+    token: "",
+    userInfo: {},
+    repoInfo: {},
+    plannerData: {}
+  },
+  getters: {
+    getUserInfo: state => {
+      return state.userInfo;
+    }
+  },
+  mutations: {
+    setUserInfo: state => userInfo => {
+      state.userInfo = userInfo;
+    }
+  }
+});
+
 new Vue({
   router,
+  store,
   render: h => h(App)
 }).$mount("#app");

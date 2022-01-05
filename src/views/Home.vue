@@ -156,7 +156,7 @@ export default {
           method: "GET",
           headers: this.github.api.header(this.token),
           success: data => {
-            window.git.userInfo = data;
+            this.$store._mutations.setUserInfo(data);
             this.showModal("알림", "인증이 완료되었습니다", function() {
               return this.moveTo("profile");
             });

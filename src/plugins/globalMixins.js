@@ -66,7 +66,8 @@ const GlobalMixins = {
 
         //authentication
         isAuthenticated: function() {
-          if (!this.token) {
+          let authToken = this.authUtils.getAuthToken();
+          if (!authToken) {
             return false;
           } else {
             return true;
@@ -93,10 +94,6 @@ const GlobalMixins = {
         };
       },
 
-      beforeCreate(){
-        window.git = window.git || {};
-      },
-
       mounted() {
         let { bodyClass } = this.$options;
         if (bodyClass) {
@@ -104,7 +101,6 @@ const GlobalMixins = {
         }
 
         window.addEventListener("resize", this.handleResize);
-        window.git = {};
       },
 
       beforeDestroy() {

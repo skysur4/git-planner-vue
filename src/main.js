@@ -13,6 +13,7 @@
 // * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 import Vue from "vue";
+import Vuex from 'vuex'
 import App from "./App.vue";
 import router from "./router";
 //import store from "@store";
@@ -21,36 +22,18 @@ import MaterialKit from "./plugins/material-kit";
 
 Vue.config.productionTip = false;
 
-//Vue.prototype.$token = "";
-//Vue.prototype.$userInfo = {};
-//Vue.prototype.$repoInfo = {};
-//Vue.prototype.$plannerData = {};
-
-Vue.prototype.$coreData = Vue.observable({
-  token: "",
-  userInfo: {},
-  repoInfo: {},
-  plannerData: {}
-});
-
-let globalData = new Vue({
-  $token: "",
-  $userInfo: {},
-  $repoInfo: {},
-  $plannerData: {}
-});
-
 Vue.use(MaterialKit);
+Vue.use(Vuex);
 
 const NavbarStore = {
-  showNavbar: false
+  showNavbar: false,
+  testData: "123"
 };
 
 Vue.mixin({
   data() {
     return {
-      NavbarStore,
-      globalData
+      NavbarStore
     };
   }
 });

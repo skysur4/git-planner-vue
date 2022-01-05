@@ -48,4 +48,4 @@ const authUtils = {
   createStateCode
 };
 
-export default authUtils
+export default authUtils;

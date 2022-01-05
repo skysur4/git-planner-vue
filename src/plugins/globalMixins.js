@@ -2,6 +2,7 @@
  * You can register global mixins here
  */
 import authUtils from "./authentications";
+import settings from "./settings";
 import github from "./api.github";
 
 const GlobalMixins = {
@@ -65,17 +66,9 @@ const GlobalMixins = {
 
         //authentication
         isAuthenticated: function() {
-          let authToken = this.authUtils.getAuthToken();
-          if (
-            authToken == null ||
-            authToken == undefined ||
-            authToken == "null" ||
-            authToken == "undefined" ||
-            authToken == ""
-          ) {
+          if (!this.token) {
             return false;
           } else {
-            this.$coreData.token = authToken;
             return true;
           }
         }
@@ -88,8 +81,8 @@ const GlobalMixins = {
           //modal
           modalInfo: { title: "Title", content: "Content Body" },
           //settings
-          isAdult: window.localStorage.getItem("isAdult"),
-          language: "ko",
+          theme: settings.getTheme(),
+          language: settings.getLang(),
           //window resize
           wWidth: window.innerWidth,
           wHeight: window.innerHeight,
@@ -100,6 +93,10 @@ const GlobalMixins = {
         };
       },
 
+      beforeCreate(){
+        window.git = window.git || {};
+      },
+
       mounted() {
         let { bodyClass } = this.$options;
         if (bodyClass) {
@@ -107,6 +104,7 @@ const GlobalMixins = {
         }
 
         window.addEventListener("resize", this.handleResize);
+        window.git = {};
       },
 
       beforeDestroy() {

@@ -45,8 +45,8 @@ const store = new Vuex.Store({
     repoInfo: {},
     plannerData: {}
   },
-  getters: {
-    getUserInfo: state => {
+  computed: {
+    getUserInfo() {
       return state.userInfo;
     }
   },
@@ -57,8 +57,17 @@ const store = new Vuex.Store({
   }
 });
 
+const PlannerData = {
+  computed: {
+    getUserInfo() {
+      return this.$store.state.getUserInfo;
+    }
+  }
+}
+
 new Vue({
   router,
   store,
+  components: { PlannerData },
   render: h => h(App)
 }).$mount("#app");

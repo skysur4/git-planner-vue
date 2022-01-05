@@ -154,18 +154,19 @@ export default {
         const params = {
           url: this.github.api.profile,
           method: "GET",
-          headers: this.github.api.header(this.token),
+          headers: this.github.api.header(this.authUtils.getAuthToken()),
           success: data => {
-            this.$store._mutations.setUserInfo(data);
             this.showModal("알림", "인증이 완료되었습니다", function() {
               return this.moveTo("profile");
             });
           },
           fail: err => {
+            this.showModal("알림", err.message);
             this.authUtils.resetToken();
           }
         };
-        this.gpFetch(params);
+        const userInfo = this.gpFetch(params);
+        this.$store.commit("setUserInfo", userInfo);
       }
     }
   }

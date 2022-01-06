@@ -10,6 +10,7 @@ const GlobalMixins = {
     Vue.mixin({
       methods: {
         gpFetch: async function(params) {
+          const store = this.$store;
           return fetch(params.url, {
             method: params.method,
             headers: params.headers,
@@ -26,6 +27,10 @@ const GlobalMixins = {
             })
             .then(data => {
               console.log(data);
+              if (params.commit) {
+                store.commit(params.commit, data);
+              }
+
               if (params.success && params.success instanceof Function) {
                 params.success(data);
               } else {
@@ -55,9 +60,6 @@ const GlobalMixins = {
           this.modalOnClose = function() {};
         },
         modalOnClose: function() {},
-        moveTo: function(name = "") {
-          window.location.replace(process.env.VUE_APP_CONTEXT_PATH + name);
-        },
 
         handleResize: function(e) {
           this.wWidth = window.innerWidth;
@@ -75,8 +77,6 @@ const GlobalMixins = {
         }
       },
 
-      computed: {},
-
       data() {
         return {
           //modal
@@ -89,9 +89,18 @@ const GlobalMixins = {
           wHeight: window.innerHeight,
           //authentication
           authUtils: authUtils,
+          token: authUtils.getAuthToken(),
           //github
-          github: github
+          github: github,
+          userInfo: this.$store.getters.getUserInfo,
+          defaultBranch: this.$store.getters.getDefaultBranch
         };
+      },
+
+      computed: {
+        // userInfo() {
+        //   return this.$store.getters.getUserInfo;
+        // }
       },
 
       mounted() {

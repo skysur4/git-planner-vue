@@ -19,14 +19,14 @@ import router from "./router";
 //import store from "@store";
 
 import MaterialKit from "./plugins/material-kit";
+import { store } from "./plugins/store";
 
 Vue.config.productionTip = false;
 
 Vue.use(MaterialKit);
 
 const NavbarStore = {
-  showNavbar: false,
-  testData: "123"
+  showNavbar: false
 };
 
 Vue.mixin({
@@ -37,37 +37,8 @@ Vue.mixin({
   }
 });
 
-Vue.use(Vuex);
-const store = new Vuex.Store({
-  state: {
-    token: "",
-    userInfo: {},
-    repoInfo: {},
-    plannerData: {}
-  },
-  computed: {
-    getUserInfo() {
-      return state.userInfo;
-    }
-  },
-  mutations: {
-    setUserInfo: state => userInfo => {
-      state.userInfo = userInfo;
-    }
-  }
-});
-
-const PlannerData = {
-  computed: {
-    getUserInfo() {
-      return this.$store.state.getUserInfo;
-    }
-  }
-}
-
 new Vue({
   router,
-  store,
-  components: { PlannerData },
+  store: store,
   render: h => h(App)
 }).$mount("#app");

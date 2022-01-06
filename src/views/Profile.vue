@@ -19,7 +19,7 @@
                 </div>
                 <div class="name">
                   <h3 class="title">{{ this.userInfo.name }}</h3>
-                  <h6><img alt="GitHub last commit" :src="commitBadge" /></h6>
+                  <h6>{{ this.userInfo.login }}</h6>
 
                   <md-button class="md-simple md-dribbble"
                     ><img alt="GitHub follower" :src="followerBadge"
@@ -27,10 +27,6 @@
                   <md-button class="md-simple md-dribbble"
                     ><img alt="GitHub stars" :src="starBadge"
                   /></md-button>
-
-                  <!--a href=""><img src="https://shields.io//github/forks/{{this.userInfo.login}}/:repo?label=Fork" /></a>
-				<a href=""><img src="https://shields.io//github/stars/{{this.userInfo.login}}/:repo?style=social" /></a>
-				<a href=""><img src="https://shields.io//github/watchers/{{this.userInfo.login}}/:repo?label=Watch" /></a-->
                 </div>
               </div>
             </div>
@@ -178,79 +174,53 @@ export default {
       };
     },
     followerBadge() {
-      return `https://shields.io/github/followers/${this.userInfo.login}?label=Follow&style=social`;
+      return `https://shields.io/github/followers/${this.userInfo.login}?label=Follow&style=social&link=https://github.com/${this.userInfo.login}`;
     },
     starBadge() {
-      return `https://shields.io/github/stars/${this.userInfo.login}?affiliations=OWNER%2CCOLLABORATOR&style=social`;
+      return `https://shields.io/github/stars/${this.userInfo.login}?affiliations=OWNER%2CCOLLABORATOR&style=social&link=https://github.com/${this.userInfo.login}`;
     },
-    commitBadge() {
-      return `https://shields.io/github/last-commit/${this.userInfo.login}/${process.env.VUE_APP_DATA_REPOSITORY}?label=${this.userInfo.login}&style=social&logo=github`;
+    retrieveTree(){
+      debugger;
+      return getTreeData(this.defaultBranch);
     }
   },
   methods: {
     getRepository() {
-      debugger;
       if (this.isAuthenticated()) {
-        const url = this.github.api.getRepo(this.userInfo.login);
-
-        fetch(url, {
+        // const owner = this.userInfo.login;
+        const getRepoData = {
+          url: this.github.api.getRepo(this.userInfo.login),
           method: "GET",
-          headers: this.github.api.header(this.token)
-        })
-          .then(res => {
-            if (res.ok) {
-              return res.json();
-            } else {
-              const err = new Error("HTTP error...");
-              err.res = res;
-              throw err;
-            }
-          })
-          .then(data => {
-            console.log(data);
-            this.setRepoInfo(data);
-          })
-          .catch(err => {
-            console.log(err);
-            //alert(this.props.t('alert.authentication') + this.props.t('alert.error') + ": [" + err +"]");
-            if (confirm("데이터 저장소 조회\n새로 만들까?")) {
+          headers: this.github.api.header(this.token),
+          fail: err => {
+            if (confirm("데이터 저장소가 없습니다\n새로 만들까요?")) {
               this.createRespository();
             }
-          });
+          },
+          commit: "setDefaultBranch"
+        };
+        this.defaultBranch = this.gpFetch(getRepoData);
       }
     },
 
-    getPlannerData() {
+    getTreeData(defaultBranch) {
       if (this.isAuthenticated()) {
-        const url = this.github.getTree(
-          this.userInfo.login,
-          this.repoInfo.default_branch
-        );
-
-        fetch(url, {
+        // const owner = this.userInfo.login;
+        const getTreeData = {
+          url: this.github.getTree(this.userInfo.login, defaultBranch),
           method: "GET",
-          headers: this.github.api.header(this.token)
-        })
-          .then(res => {
-            if (res.ok) {
-              return res.json();
-            } else {
-              const err = new Error("HTTP error...");
-              err.res = res;
-              throw err;
-            }
-          })
-          .then(data => {
-            console.log(data);
-            this.setPlannerData(data);
-            //default_branch
-            //trees_url: "https://api.github.com/repos/skysur4/planner-data/git/trees{/sha}"
-          })
-          .catch(err => {
-            console.log(err);
-            //alert(this.props.t('alert.authentication') + this.props.t('alert.error') + ": [" + err +"]");
-            alert("데이터 저장소 생성 실패\n나중에 다시 시도");
-          });
+          headers: this.github.api.header(this.token),
+          success: data => {
+            this.showModal("알림", "로딩 완료", function() {
+              this.$router.push("profile");
+            });
+          },
+          fail: err => {
+            this.showModal("알림", err.message);
+          },
+          commit: "setTree"
+        };
+        this.gpFetch(getTreeData);
       }
     },
 

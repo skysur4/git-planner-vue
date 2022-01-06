@@ -119,11 +119,11 @@ export default {
           this.showModal(
             "알림",
             "허가되지 않은 앱을 사용중입니다",
-            this.moveTo
+            this.$router.push("/")
           );
         } else {
           //alert(t('alert.access') + t('alert.error'));
-          this.showModal("알림", "잘못된 접근입니다", this.moveTo);
+          this.showModal("알림", "잘못된 접근입니다", this.$router.push("/"));
         }
       }
     },
@@ -151,22 +151,22 @@ export default {
 
     getUserInfo() {
       if (this.isAuthenticated()) {
-        const params = {
+        const getUserData = {
           url: this.github.api.profile,
           method: "GET",
-          headers: this.github.api.header(this.authUtils.getAuthToken()),
+          headers: this.github.api.header(this.token),
           success: data => {
             this.showModal("알림", "인증이 완료되었습니다", function() {
-              return this.moveTo("profile");
+              this.$router.push("profile");
             });
           },
           fail: err => {
             this.showModal("알림", err.message);
             this.authUtils.resetToken();
-          }
+          },
+          commit: "setUserInfo"
         };
-        const userInfo = this.gpFetch(params);
-        this.$store.commit("setUserInfo", userInfo);
+        this.gpFetch(getUserData);
       }
     }
   }

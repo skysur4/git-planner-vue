@@ -10,7 +10,7 @@ const GlobalMixins = {
     Vue.mixin({
       methods: {
         gpFetch: async function(params) {
-          const store = this.$store;
+          const authUtils = this.authUtils;
           return fetch(params.url, {
             method: params.method,
             headers: params.headers,
@@ -28,7 +28,7 @@ const GlobalMixins = {
             .then(data => {
               console.log(data);
               if (params.commit) {
-                store.commit(params.commit, data);
+                authUtils.commit(params.commit, data);
               }
 
               if (params.success && params.success instanceof Function) {
@@ -74,12 +74,34 @@ const GlobalMixins = {
           } else {
             return true;
           }
+        },
+
+        isLogin: function() {
+          if (!this.token || !this.user.id) {
+            return false;
+          } else {
+            return true;
+          }
+        },
+
+        getTree: function() {
+          if (this.isLogin()) {
+            const getTreeData = {
+              url: this.repo.getTreeUrl(this.repo.branchName),
+              method: "GET",
+              headers: this.github.api.header(this.token)
+            };
+            return this.gpFetch(getTreeData);
+          } else {
+            return [];
+          }
         }
       },
 
       data() {
         return {
           //modal
+          isModalOn: false,
           modalInfo: { title: "Title", content: "Content Body" },
           //settings
           theme: settings.getTheme(),
@@ -90,18 +112,15 @@ const GlobalMixins = {
           //authentication
           authUtils: authUtils,
           token: authUtils.getAuthToken(),
+          user: authUtils.getUserInfo(),
+          repo: authUtils.getRepository(),
           //github
           github: github,
-          userInfo: this.$store.getters.getUserInfo,
-          defaultBranch: this.$store.getters.getDefaultBranch
+          trees: this.getTree()
         };
       },
 
-      computed: {
-        // userInfo() {
-        //   return this.$store.getters.getUserInfo;
-        // }
-      },
+      computed: {},
 
       mounted() {
         let { bodyClass } = this.$options;

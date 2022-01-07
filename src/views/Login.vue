@@ -100,7 +100,7 @@ export default {
             body: this.github.body({ code: code }),
             success: data => {
               this.authUtils.setAuthToken(data.access_token);
-              this.moveTo();
+              this.$router.push("/");
             },
             fail: err => {
               alert(err);
@@ -108,7 +108,7 @@ export default {
           };
           this.gpFetch(params);
         } else {
-          this.showModal("알림", "잘못된 접근입니다", this.moveTo);
+          this.showModal("알림", "잘못된 접근입니다", this.$router.push("/"));
         }
       }
 
@@ -119,15 +119,11 @@ export default {
           this.showModal(
             "알림",
             "허가되지 않은 앱을 사용중입니다",
-            this.$router.push({ name: "/" })
+            this.$router.push("/")
           );
         } else {
           //alert(t('alert.access') + t('alert.error'));
-          this.showModal(
-            "알림",
-            "잘못된 접근입니다",
-            this.$router.push({ name: "/" })
-          );
+          this.showModal("알림", "잘못된 접근입니다", this.$router.push("/"));
         }
       }
     },
@@ -155,10 +151,10 @@ export default {
 
     getUserInfo() {
       if (this.isAuthenticated()) {
-        const params = {
+        const getUserData = {
           url: this.github.api.profile,
           method: "GET",
-          headers: this.github.api.header(this.authUtils.getAuthToken()),
+          headers: this.github.api.header(this.token),
           success: data => {
             this.showModal("알림", "인증이 완료되었습니다", function() {
               this.$router.push("profile");
@@ -168,9 +164,9 @@ export default {
             this.showModal("알림", err.message);
             this.authUtils.resetToken();
           },
-          commit: "setUserInfo"
+          commit: "user"
         };
-        this.gpFetch(params);
+        this.gpFetch(getUserData);
       }
     }
   }

@@ -64,8 +64,6 @@ export default {
       firstname: null,
       email: null,
       password: null,
-
-      isModalOn: false
     };
   },
   props: {
@@ -100,7 +98,7 @@ export default {
             body: this.github.body({ code: code }),
             success: data => {
               this.authUtils.setAuthToken(data.access_token);
-              this.moveTo();
+              this.$router.push("/");
             },
             fail: err => {
               alert(err);
@@ -108,7 +106,7 @@ export default {
           };
           this.gpFetch(params);
         } else {
-          this.showModal("알림", "잘못된 접근입니다", this.moveTo);
+          this.showModal("알림", "잘못된 접근입니다", this.$router.push("/"));
         }
       }
 
@@ -162,9 +160,9 @@ export default {
           },
           fail: err => {
             this.showModal("알림", err.message);
-            this.authUtils.resetToken();
+            this.authUtils.resetAuth();
           },
-          commit: "setUserInfo"
+          commit: "user"
         };
         this.gpFetch(getUserData);
       }

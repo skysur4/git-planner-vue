@@ -7,7 +7,7 @@
       { 'md-card-plain': plain }
     ]"
   >
-    <md-card-header slot="header-title"> </md-card-header>
+    <md-card-header slot="header-title">1 </md-card-header>
 
     <md-card-content>
       <md-list class="nav-tabs">

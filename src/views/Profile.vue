@@ -11,120 +11,94 @@
             <div class="md-layout-item md-size-50 mx-auto">
               <div class="profile">
                 <div class="avatar">
+                  <a :href="gitLink">
                   <img
-                    :src="this.userInfo.avatar_url"
+                    :src="this.user.avatar"
                     alt="Circle Image"
                     class="img-raised rounded-circle img-fluid"
-                  />
+                  /></a>
                 </div>
                 <div class="name">
-                  <h3 class="title">{{ this.userInfo.name }}</h3>
-                  <h6>{{ this.userInfo.login }}</h6>
-
-                  <md-button class="md-simple md-dribbble"
-                    ><img alt="GitHub follower" :src="followerBadge"
-                  /></md-button>
-                  <md-button class="md-simple md-dribbble"
-                    ><img alt="GitHub stars" :src="starBadge"
-                  /></md-button>
+                  <h3 class="title" v-show="this.user.name">{{ this.user.name }}</h3>
+                  <h6>&nbsp;{{ this.user.id }}</h6>
+                  <md-button class="md-simple md-dribbble" :href="gitLink">
+                    <img alt="GitHub Follower" :src="followerBadge" style="margin-right:3px;"/>
+                    <img alt="GitHub Stars" :src="starBadge"/>
+                  </md-button>
                 </div>
               </div>
             </div>
           </div>
           <div class="description text-center">
-            <p>{{ this.userInfo.bio }}</p>
+            <p>{{ this.user.bio }}</p>
           </div>
+
           <div class="profile-tabs">
             <tabs
               :tab-name="['To-do', 'New', 'Favorite']"
-              :tab-icon="['list', 'star', 'favorite']"
+              :tab-icon="['list', 'post_add', 'favorite_border']"
               plain
+              flex-column
               nav-pills-icons
-              color-button="success"
+              color-button="primary"
             >
               <!-- here you can add your content for tab-content -->
               <template slot="tab-pane-1">
-                <div class="md-layout">
-                  <div class="md-layout-item md-size-25 ml-auto">
-                    <h6>title</h6>
-                    12345 2345234 2345
-                    <h6>title</h6>
-                    12345 2345234 2345 52345234 5 2345 3245 2345 324 5 3245 32
-                    45 3
-                    <h6>title</h6>
-                    12345 2345234 2345
-                    <h6>title</h6>
-                    12345 2345234 2345
-                  </div>
-                  <div class="md-layout-item md-size-25 mr-auto">
-                    <h6>title</h6>
-                    <a href="">12345 2345234 2345</a>
-                    <h6>title</h6>
-                    <a href="">12345 2345234 2345</a>
-                    <h6>title</h6>
-                    <a href=""
-                      >12345 2345234 2345 345 32 45 23 4 523 45 23 4 5ojiepr
-                      jpfo j3p2o4ij po4ij poi 3j2p4oij</a
-                    >
-                  </div>
-                </div>
+		        <div class="md-layout-item mx-auto">
+		          <div v-for="(item, index) in todoList"
+		          	   @click="switchPanel(tabName[index])"
+		         	   v-bind:key="item.key">
+		          	<h6>{{item.title}}</h6>
+            		<p>{{item.content}}</p>
+		          </div>
+			    </div>
               </template>
               <template slot="tab-pane-2">
-                <div class="md-layout">
-                  <div class="md-layout-item md-size-25 ml-auto">
-                    <h6>title</h6>
-                    12345 2345234 2345
-                    <h6>title</h6>
-                    12345 2345234 2345 52345234 5 2345 3245 2345 324 5 3245 32
-                    45 3
-                    <h6>title</h6>
-                    12345 2345234 2345
-                    <h6>title</h6>
-                    12345 2345234 2345
-                  </div>
-                  <div class="md-layout-item md-size-25 mr-auto">
-                    <h6>title</h6>
-                    <a href="">12345 2345234 2345</a>
-                    <h6>title</h6>
-                    <a href="">12345 2345234 2345</a>
-                    <h6>title</h6>
-                    <a href=""
-                      >12345 2345234 2345 345 32 45 23 4 523 45 23 4 5ojiepr
-                      jpfo j3p2o4ij po4ij poi 3j2p4oij</a
-                    >
-                  </div>
-                </div>
+		        <div class="md-layout-item mx-auto">
+		          <div v-for="(item, index) in newList"
+		          	   @click="switchPanel(tabName[index])"
+		         	   v-bind:key="item.key">
+		          	<h6>{{item.title}}</h6>
+            		<p>{{item.content}}</p>
+		          </div>
+			    </div>
               </template>
               <template slot="tab-pane-3">
-                <div class="md-layout">
-                  <div class="md-layout-item md-size-25 ml-auto">
-                    <h6>title</h6>
-                    12345 2345234 2345
-                    <h6>title</h6>
-                    12345 2345234 2345 52345234 5 2345 3245 2345 324 5 3245 32
-                    45 3
-                    <h6>title</h6>
-                    12345 2345234 2345
-                    <h6>title</h6>
-                    12345 2345234 2345
-                  </div>
-                  <div class="md-layout-item md-size-25 mr-auto">
-                    <h6>title</h6>
-                    <a href="">12345 2345234 2345</a>
-                    <h6>title</h6>
-                    <a href="">12345 2345234 2345</a>
-                    <h6>title</h6>
-                    <a href=""
-                      >12345 2345234 2345 345 32 45 23 4 523 45 23 4 5ojiepr
-                      jpfo j3p2o4ij po4ij poi 3j2p4oij</a
-                    >
-                  </div>
-                </div>
+		        <div class="md-layout-item mx-auto">
+		          <div v-for="(item, index) in favoriteList"
+		          	   @click="switchPanel(tabName[index])"
+		         	   v-bind:key="item.key">
+		          	<h6>{{item.title}}</h6>
+            		<p>{{item.content}}</p>
+		          </div>
+			    </div>
               </template>
             </tabs>
           </div>
         </div>
       </div>
+      <modal v-if="isModalOn" @close="this.hideModal">
+        <template slot="header">
+          <h4 class="modal-title">{{ this.modalInfo.title }}</h4>
+          <md-button
+            class="md-simple md-just-icon md-round modal-default-button"
+            @click="this.hideModal"
+          >
+            <md-icon>clear</md-icon>
+          </md-button>
+        </template>
+
+        <template slot="body">
+          <p>{{ this.modalInfo.content }}</p>
+        </template>
+
+        <template slot="footer">
+          <!--md-button class="md-simple">Nice Button</md-button-->
+          <md-button class="md-danger md-simple" @click="this.hideModal">
+            Close
+          </md-button>
+        </template>
+      </modal>
     </div>
   </div>
 </template>
@@ -173,54 +147,61 @@ export default {
         backgroundImage: `url(${this.header})`
       };
     },
+    gitLink() {
+      return `https://github.com/${this.user.id}`;
+    },
     followerBadge() {
-      return `https://shields.io/github/followers/${this.userInfo.login}?label=Follow&style=social&link=https://github.com/${this.userInfo.login}`;
+      return `https://shields.io/github/followers/${this.user.id}?label=Follow&style=social`;
     },
     starBadge() {
-      return `https://shields.io/github/stars/${this.userInfo.login}?affiliations=OWNER%2CCOLLABORATOR&style=social&link=https://github.com/${this.userInfo.login}`;
+      return `https://shields.io/github/stars/${this.user.id}?affiliations=OWNER%2CCOLLABORATOR&style=social`;
     },
-    retrieveTree(){
-      debugger;
-      return getTreeData(this.defaultBranch);
-    }
+    todoList() {
+	  return [
+	  	{key:"1", title:"1111", content:"가나다 alisjdoifj posaid fpoij 2po3i4 poij fdpoi j21poi3j 4oi23 oif oi23j 4oi2j 34oij2 o3ij doi j2oi34j"},
+	  	{key:"2", title:"1112", content:"가나다 alisjdoifj posaid fpoij 2po3i4 poij fdpoi j21poi3j 4oi23 oif oi23j 4oi2j 34oij2 o3ij doi j2oi34j"},
+	  	{key:"3", title:"1113", content:"가나다 alisjdoifj posaid fpoij 2po3i4 poij fdpoi j21poi3j 4oi23 oif oi23j 4oi2j 34oij2 o3ij doi j2oi34j"},
+	  	{key:"4", title:"1114", content:"가나다 alisjdoifj posaid fpoij 2po3i4 poij fdpoi j21poi3j 4oi23 oif oi23j 4oi2j 34oij2 o3ij doi j2oi34j"}
+	  ];
+	},
+    newList() {
+	  return [
+	  	{key:"1", title:"2111", content:"가나다 alisjdoifj posaid fpoij 2po3i4 poij fdpoi j21poi3j 4oi23 oif oi23j 4oi2j 34oij2 o3ij doi j2oi34j"},
+	  	{key:"2", title:"2112", content:"가나다 alisjdoifj posaid fpoij 2po3i4 poij fdpoi j21poi3j 4oi23 oif oi23j 4oi2j 34oij2 o3ij doi j2oi34j"},
+	  	{key:"3", title:"213", content:"가나다 alisjdoifj posaid fpoij 2po3i4 poij fdpoi j21poi3j 4oi23 oif oi23j 4oi2j 34oij2 o3ij doi j2oi34j"},
+	  	{key:"4", title:"2114", content:"가나다 alisjdoifj posaid fpoij 2po3i4 poij fdpoi j21poi3j 4oi23 oif oi23j 4oi2j 34oij2 o3ij doi j2oi34j"}
+	  ];
+	},
+    favoriteList() {
+	  return [
+	  	{key:"1", title:"3111", content:"가나다 alisjdoifj posaid fpoij 2po3i4 poij fdpoi j21poi3j 4oi23 oif oi23j 4oi2j 34oij2 o3ij doi j2oi34j"},
+	  	{key:"2", title:"3112", content:"가나다 alisjdoifj posaid fpoij 2po3i4 poij fdpoi j21poi3j 4oi23 oif oi23j 4oi2j 34oij2 o3ij doi j2oi34j"},
+	  	{key:"3", title:"3113", content:"가나다 alisjdoifj posaid fpoij 2po3i4 poij fdpoi j21poi3j 4oi23 oif oi23j 4oi2j 34oij2 o3ij doi j2oi34j"},
+	  	{key:"4", title:"3114", content:"가나다 alisjdoifj posaid fpoij 2po3i4 poij fdpoi j21poi3j 4oi23 oif oi23j 4oi2j 34oij2 o3ij doi j2oi34j"}
+	  ];
+	}
   },
   methods: {
     getRepository() {
-      if (this.isAuthenticated()) {
-        // const owner = this.userInfo.login;
+      if (this.isLogin()) {
+        // const owner = this.user.id;
         const getRepoData = {
-          url: this.github.api.getRepo(this.userInfo.login),
+          url: this.github.api.getRepo(this.user.id),
           method: "GET",
           headers: this.github.api.header(this.token),
+          success: data => {
+            this.showModal("알림", "저장소 로딩", function() {
+              //this.trees = this.getTree();
+            });
+          },
           fail: err => {
             if (confirm("데이터 저장소가 없습니다\n새로 만들까요?")) {
               this.createRespository();
             }
           },
-          commit: "setDefaultBranch"
+          commit: "repo"
         };
-        this.defaultBranch = this.gpFetch(getRepoData);
-      }
-    },
-
-    getTreeData(defaultBranch) {
-      if (this.isAuthenticated()) {
-        // const owner = this.userInfo.login;
-        const getTreeData = {
-          url: this.github.getTree(this.userInfo.login, defaultBranch),
-          method: "GET",
-          headers: this.github.api.header(this.token),
-          success: data => {
-            this.showModal("알림", "로딩 완료", function() {
-              this.$router.push("profile");
-            });
-          },
-          fail: err => {
-            this.showModal("알림", err.message);
-          },
-          commit: "setTree"
-        };
-        this.gpFetch(getTreeData);
+        this.gpFetch(getRepoData);
       }
     },
 

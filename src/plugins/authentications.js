@@ -26,10 +26,6 @@ const getAuthToken = () => {
     : token;
 };
 
-const resetToken = () => {
-  window.localStorage.removeItem("token");
-};
-
 const createStateCode = () => {
   return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
     (
@@ -39,13 +35,83 @@ const createStateCode = () => {
   );
 };
 
+const setUserInfo = payload => {
+  window.localStorage.setItem("login", payload.login);
+  window.localStorage.setItem("name", payload.name);
+  window.localStorage.setItem("bio", payload.bio);
+  window.localStorage.setItem("avatar_url", payload.avatar_url);
+  return {
+    id: payload.login,
+    name: payload.name,
+    bio: payload.bio,
+    avatar: payload.avatar_url
+  };
+};
+
+const getUserInfo = () => {
+  return {
+    id: window.localStorage.getItem("login"),
+    name: window.localStorage.getItem("name"),
+    bio: window.localStorage.getItem("bio"),
+    avatar: window.localStorage.getItem("avatar_url")
+  };
+};
+
+const setRepository = payload => {
+  window.localStorage.setItem("default_branch", payload.default_branch);
+  window.localStorage.setItem("trees_url", payload.trees_url);
+  return {
+    userId: payload.default_branch,
+    userName: payload.trees_url
+  };
+};
+
+const getRepository = () => {
+  return {
+    branchName: window.localStorage.getItem("default_branch"),
+    treeUrl: window.localStorage.getItem("trees_url"),
+    getTreeUrl: branch => {
+      return this.treeUrl.replace("{/sha}", "/" + branch);
+    }
+  };
+};
+
+const commit = (target, payload) => {
+  if (target === "user") {
+    setUserInfo(payload);
+  }
+  if (target === "repo") {
+    setRepository(payload);
+  }
+};
+
+const resetAuth = () => {
+  window.localStorage.removeItem("token");
+  logout();
+};
+
+const logout = () => {
+  window.localStorage.getItem("login");
+  window.localStorage.getItem("name");
+  window.localStorage.getItem("bio");
+  window.localStorage.getItem("avatar_url");
+  window.localStorage.getItem("default_branch");
+  window.localStorage.getItem("trees_url");
+};
+
 const authUtils = {
   setAuthState,
   getAuthState,
   setAuthToken,
   getAuthToken,
-  resetToken,
-  createStateCode
+  createStateCode,
+  //사용자 정보
+  setUserInfo,
+  getUserInfo,
+  setRepository,
+  getRepository,
+  commit,
+  resetAuth
 };
 
 export default authUtils;

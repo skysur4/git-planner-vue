@@ -23,7 +23,8 @@
                   <h6>&nbsp;{{ this.user.id }}</h6>
                   <md-button class="md-simple md-dribbble" :href="gitLink">
                     <img alt="GitHub Follower" :src="followerBadge" style="margin-right:3px;"/>
-                    <img alt="GitHub Stars" :src="starBadge"/>
+                    <img alt="GitHub Stars" :src="starBadge" style="margin-right:3px;"/>
+                    <img alt="GitHub Last Updated" :src="lastUpdatedBadge" />
                   </md-button>
                 </div>
               </div>
@@ -46,30 +47,30 @@
               <template slot="tab-pane-1">
 		        <div class="md-layout-item mx-auto">
 		          <div v-for="(item, index) in todoList"
-		          	   @click="switchPanel(tabName[index])"
-		         	   v-bind:key="item.key">
-		          	<h6>{{item.title}}</h6>
-            		<p>{{item.content}}</p>
+		          	   @click="loadContentData(item.url)"
+		         	   v-bind:key="index">
+		          	<h6>{{item.path}}</h6>
+            		<p v-show="item.content">{{item.url}}</p>
 		          </div>
 			    </div>
               </template>
               <template slot="tab-pane-2">
 		        <div class="md-layout-item mx-auto">
 		          <div v-for="(item, index) in newList"
-		          	   @click="switchPanel(tabName[index])"
-		         	   v-bind:key="item.key">
-		          	<h6>{{item.title}}</h6>
-            		<p>{{item.content}}</p>
+		          	   @click="loadContentData(item.url)"
+		         	   v-bind:key="index">
+		          	<h6>{{item.path}}</h6>
+            		<p v-show="item.content">{{item.url}}</p>
 		          </div>
 			    </div>
               </template>
               <template slot="tab-pane-3">
 		        <div class="md-layout-item mx-auto">
 		          <div v-for="(item, index) in favoriteList"
-		          	   @click="switchPanel(tabName[index])"
-		         	   v-bind:key="item.key">
-		          	<h6>{{item.title}}</h6>
-            		<p>{{item.content}}</p>
+		          	   @click="loadContentData(item.url)"
+		         	   v-bind:key="index">
+		          	<h6>{{item.path}}</h6>
+            		<p v-show="item.content">{{item.url}}</p>
 		          </div>
 			    </div>
               </template>
@@ -93,10 +94,9 @@
         </template>
 
         <template slot="footer">
-          <!--md-button class="md-simple">Nice Button</md-button-->
-          <md-button class="md-danger md-simple" @click="this.hideModal">
-            Close
-          </md-button>
+          <md-button class="md-simple" v-if="isConfirmModal" @click="this.hideModal">Yes</md-button>
+          <md-button class="md-simple" v-if="isConfirmModal" @click="this.hideModal">No</md-button>
+          <md-button class="md-danger md-simple" v-if="!isConfirmModal" @click="this.hideModal">Close</md-button>
         </template>
       </modal>
     </div>
@@ -132,7 +132,10 @@ export default {
         { image: require("@/assets/img/examples/clem-onojeghuo.jpg") },
         { image: require("@/assets/img/examples/olu-eletu.jpg") },
         { image: require("@/assets/img/examples/studio-1.jpg") }
-      ]
+      ],
+      todo: {},
+      news: {},
+      fvrt: {},
     };
   },
   props: {
@@ -156,43 +159,32 @@ export default {
     starBadge() {
       return `https://shields.io/github/stars/${this.user.id}?affiliations=OWNER%2CCOLLABORATOR&style=social`;
     },
+    lastUpdatedBadge() {
+      return `https://img.shields.io/badge/Last%20Updated-${this.$moment(this.repo.updatedAt).calendar()}-brightgreen?style=social&logo=github`;
+    },
+
     todoList() {
-	  return [
-	  	{key:"1", title:"1111", content:"가나다 alisjdoifj posaid fpoij 2po3i4 poij fdpoi j21poi3j 4oi23 oif oi23j 4oi2j 34oij2 o3ij doi j2oi34j"},
-	  	{key:"2", title:"1112", content:"가나다 alisjdoifj posaid fpoij 2po3i4 poij fdpoi j21poi3j 4oi23 oif oi23j 4oi2j 34oij2 o3ij doi j2oi34j"},
-	  	{key:"3", title:"1113", content:"가나다 alisjdoifj posaid fpoij 2po3i4 poij fdpoi j21poi3j 4oi23 oif oi23j 4oi2j 34oij2 o3ij doi j2oi34j"},
-	  	{key:"4", title:"1114", content:"가나다 alisjdoifj posaid fpoij 2po3i4 poij fdpoi j21poi3j 4oi23 oif oi23j 4oi2j 34oij2 o3ij doi j2oi34j"}
-	  ];
+	  return this.todo.items;
+	},
+	todoCount() {
+	  return this.todo.total_count > 0?this.todo.total_count:0;
 	},
     newList() {
-	  return [
-	  	{key:"1", title:"2111", content:"가나다 alisjdoifj posaid fpoij 2po3i4 poij fdpoi j21poi3j 4oi23 oif oi23j 4oi2j 34oij2 o3ij doi j2oi34j"},
-	  	{key:"2", title:"2112", content:"가나다 alisjdoifj posaid fpoij 2po3i4 poij fdpoi j21poi3j 4oi23 oif oi23j 4oi2j 34oij2 o3ij doi j2oi34j"},
-	  	{key:"3", title:"213", content:"가나다 alisjdoifj posaid fpoij 2po3i4 poij fdpoi j21poi3j 4oi23 oif oi23j 4oi2j 34oij2 o3ij doi j2oi34j"},
-	  	{key:"4", title:"2114", content:"가나다 alisjdoifj posaid fpoij 2po3i4 poij fdpoi j21poi3j 4oi23 oif oi23j 4oi2j 34oij2 o3ij doi j2oi34j"}
-	  ];
+	  return this.news.items;
 	},
     favoriteList() {
-	  return [
-	  	{key:"1", title:"3111", content:"가나다 alisjdoifj posaid fpoij 2po3i4 poij fdpoi j21poi3j 4oi23 oif oi23j 4oi2j 34oij2 o3ij doi j2oi34j"},
-	  	{key:"2", title:"3112", content:"가나다 alisjdoifj posaid fpoij 2po3i4 poij fdpoi j21poi3j 4oi23 oif oi23j 4oi2j 34oij2 o3ij doi j2oi34j"},
-	  	{key:"3", title:"3113", content:"가나다 alisjdoifj posaid fpoij 2po3i4 poij fdpoi j21poi3j 4oi23 oif oi23j 4oi2j 34oij2 o3ij doi j2oi34j"},
-	  	{key:"4", title:"3114", content:"가나다 alisjdoifj posaid fpoij 2po3i4 poij fdpoi j21poi3j 4oi23 oif oi23j 4oi2j 34oij2 o3ij doi j2oi34j"}
-	  ];
+	  return this.fvrt.items;
 	}
   },
   methods: {
     getRepository() {
       if (this.isLogin()) {
-        // const owner = this.user.id;
         const getRepoData = {
           url: this.github.api.getRepo(this.user.id),
           method: "GET",
           headers: this.github.api.header(this.token),
           success: data => {
-            this.showModal("알림", "저장소 로딩", function() {
-              //this.trees = this.getTree();
-            });
+			this.repo = this.authUtils.getRepository();
           },
           fail: err => {
             if (confirm("데이터 저장소가 없습니다\n새로 만들까요?")) {
@@ -206,37 +198,67 @@ export default {
     },
 
     createRespository() {
-      if (this.isAuthenticated()) {
-        fetch(this.github.api.createRepo, {
+      if (this.isLogin()) {
+        const createRepoData = {
+          url: this.github.api.createRepo,
           method: "POST",
           headers: this.github.api.header(this.token),
-          body: this.github.body(this.github.api.createRepoParams)
-        })
-          .then(res => {
-            if (res.ok) {
-              return res.json();
-            } else {
-              const err = new Error("HTTP error...");
-              err.res = res;
-              throw err;
-            }
-          })
-          .then(data => {
-            alert("데이터 저장소 생성 성공");
-            this.getRepository();
-          })
-          .catch(err => {
-            console.log(err);
-            //alert(this.props.t('alert.authentication') + this.props.t('alert.error') + ": [" + err +"]");
-            alert("데이터 저장소 생성 실패\n나중에 다시 시도");
-          });
+          body: this.github.body(this.github.api.createRepoParams),
+          success: data => {
+            this.showModal("알림", "데이터 저장소 생성 성공", function() {
+            	this.getRepository();
+            });
+          },
+          fail: err => {
+            this.showModal("알림", "데이터 저장소 생성 실패: "+err.message);
+          },
+          commit: "repo"
+        };
+        this.gpFetch(createRepoData);
       }
     }
   },
 
   mounted() {
-    this.getRepository();
-  }
+	//if(this.isRepositoryFound()){
+	//  this.loadTreeData();
+	//} else {
+	  this.getRepository();
+	//}
+
+	const todoData = this.searchFiles({
+		owner: this.user.id,
+		filename: ".todo",
+	});
+
+	const newsData = this.searchFiles({
+		owner: this.user.id,
+		filename: ".md",
+		sort: "committer-date",
+		order: "asc"
+	});
+
+	const fvrtData = this.searchFiles({
+		owner: this.user.id,
+		filename: ".memo",
+		sort: "updated",
+		order: "desc"
+	});
+
+	todoData.then(data => {
+		this.todo = data;
+	});
+	newsData.then(data => {
+		this.news = data;
+	});
+	fvrtData.then(data => {
+		this.fvrt = data;
+	});
+  },
+
+  created() {},
+
+  beforeDestroy(){}
 };
 </script>
 

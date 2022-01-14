@@ -21,7 +21,41 @@ const github = {
       return githubApiUrl + "/repos/" + owner + "/" + dataRepo;
     },
     getTree: function(owner, branch) {
-      return githubApiUrl + "/repos/" + owner + "/" + dataRepo + "/git/trees/" + branch;
+      return (
+        githubApiUrl +
+        "/repos/" +
+        owner +
+        "/" +
+        dataRepo +
+        "/git/trees/" +
+        branch
+      );
+    },
+    search: params => {
+      let q = params.keywords ? params.keywords : "";
+      q += " repo:" + params.owner + "/" + dataRepo;
+      if (params.filename) {
+        q += " filename:" + params.filename;
+      }
+      if (params.ext || params.extention) {
+        q += " extention:" + (params.ext || params.extention);
+      }
+
+      let queryString =
+        githubApiUrl + "/search/code?q=" + encodeURIComponent(q);
+      if (params.sort) {
+        queryString += "&sort=" + params.sort;
+      }
+      if (params.order) {
+        queryString += "&order=" + params.order;
+      }
+      if (params.page) {
+        queryString += "&page=" + params.page;
+      }
+      if (params.per_page) {
+        queryString += "&per_page=" + params.per_page;
+      }
+      return queryString;
     },
     header: token => {
       return {

@@ -1,0 +1,53 @@
+export default {
+  title: "깃플래너",
+  search: "검색",
+  calendar: "달력",
+  scan: "훓어보기",
+
+  "sub-title": {
+    dashboard: "1+1=?",
+    note: "타닥타닥",
+    memo: "끄적끄적",
+    plan: "계획하기",
+    notification: "에에에엥",
+    home: "대문",
+    settings: "끼릭끼릭",
+    login: "드가자",
+    logout: "나가자"
+  },
+
+  alert: {
+    welcome: "좋은 아침 입니다.",
+    error: "오류 ",
+    complete: "완료 ",
+    authentication: "인증 ",
+    access: "접근 ",
+    api: "API ",
+    call: "호출 "
+  },
+
+  memo: {
+    title: "끄적거려보자",
+    "resize-will-reset": "주의! 화면 사이즈가 변경되면 내용이 리셋됩니다."
+  },
+
+  editor: {
+    title: "에디터",
+    placeholer: "무엇을 계획 중이신가요?",
+    "tag-info": "띄어쓰기로 분리됩니다"
+  },
+
+  settings: {
+    title: "설정",
+    theme: "테마",
+    color: "색상",
+    lang: "언어",
+    ko: "한국어",
+    en: "영어",
+    id: "인니",
+    mode: "모드",
+    advanced: "고급",
+    simple: "간단",
+    unsupported: "미지원"
+  }
+};

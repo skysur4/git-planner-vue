@@ -60,20 +60,26 @@ const getUserInfo = () => {
 const setRepository = payload => {
   window.localStorage.setItem("default_branch", payload.default_branch);
   window.localStorage.setItem("trees_url", payload.trees_url);
+  window.localStorage.setItem("updated_at", payload.updated_at);
   return {
     userId: payload.default_branch,
-    userName: payload.trees_url
+    userName: payload.trees_url,
+    updatedAt: payload.updated_at
   };
 };
 
 const getRepository = () => {
-  return {
-    branchName: window.localStorage.getItem("default_branch"),
-    treeUrl: window.localStorage.getItem("trees_url"),
-    getTreeUrl: branch => {
-      return this.treeUrl.replace("{/sha}", "/" + branch);
-    }
-  };
+  let branch = window.localStorage.getItem("default_branch");
+  if (!branch) {
+    return {};
+  } else {
+    let url = window.localStorage.getItem("trees_url");
+    return {
+      branchName: window.localStorage.getItem("default_branch"),
+      treeUrl: url.replace("{/sha}", "/" + branch),
+      updatedAt: window.localStorage.getItem("updated_at")
+    };
+  }
 };
 
 const commit = (target, payload) => {
@@ -111,6 +117,7 @@ const authUtils = {
   setRepository,
   getRepository,
   commit,
+  logout,
   resetAuth
 };
 

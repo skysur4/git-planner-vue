@@ -64,8 +64,6 @@ export default {
       firstname: null,
       email: null,
       password: null,
-
-      isModalOn: false
     };
   },
   props: {
@@ -162,7 +160,7 @@ export default {
           },
           fail: err => {
             this.showModal("알림", err.message);
-            this.authUtils.resetToken();
+            this.authUtils.resetAuth();
           },
           commit: "user"
         };

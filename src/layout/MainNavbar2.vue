@@ -6,23 +6,11 @@
     :class="extraNavClasses"
     :color-on-scroll="colorOnScroll"
   >
-    <div class="md-toolbar-row">
+    <div class="md-toolbar-row md-collapse-lateral">
       <div class="md-toolbar-section-start">
         <h3 class="md-title">
-		  <i class="fas fa-home clickable" v-on:click="$router.push('/')">{{ $t('title') }}</i>
-		</h3>
-        <div class="md-collapse">
-          <div class="md-autocomplete">
-            <md-autocomplete
-              class="search has-white"
-              v-model="selectedEmployee"
-              :md-options="employees"
-              :md-open-on-focus="false"
-            >
-              <label>Search...</label>
-            </md-autocomplete>
-          </div>
-        </div>
+          <i class="fas fa-home clickable" v-on:click="$router.push('/')">{{ $t('title') }}</i>
+        </h3>
       </div>
       <div class="md-toolbar-section-end">
         <md-button
@@ -41,7 +29,7 @@
               <!-- Here you can add your items from the section-start of your toolbar -->
             </mobile-menu>
             <md-list>
-              <li class="md-list-item" v-if="!isPublic">
+              <li class="md-list-item" v-if="!showDownload">
                 <a
                   href="javascript:void(0)"
                   class="md-list-item-router md-list-item-container md-button-clean dropdown"
@@ -54,13 +42,13 @@
                         data-toggle="dropdown"
                       >
                         <i class="material-icons">apps</i>
-                        <p>Components</p>
+                        <p>Components1</p>
                       </md-button>
                       <ul class="dropdown-menu dropdown-with-icons">
                         <li>
                           <a href="#/">
                             <i class="material-icons">layers</i>
-                            <p>All Components</p>
+                            <p>All Components1</p>
                           </a>
                         </li>
                         <li>
@@ -68,7 +56,7 @@
                             href="https://demos.creative-tim.com/vue-material-kit/documentation/"
                           >
                             <i class="material-icons">content_paste</i>
-                            <p>Documentation</p>
+                            <p>Documentation1</p>
                           </a>
                         </li>
                       </ul>
@@ -80,7 +68,7 @@
               <md-list-item
                 href="https://demos.creative-tim.com/vue-material-kit/documentation/"
                 target="_blank"
-                v-if="isPublic"
+                v-if="showDownload"
               >
                 <i class="material-icons">content_paste</i>
                 <p>Documentation</p>
@@ -89,7 +77,7 @@
               <md-list-item
                 href="javascript:void(0)"
                 @click="scrollToElement()"
-                v-if="isPublic"
+                v-if="showDownload"
               >
                 <i class="material-icons">cloud_download</i>
                 <p>Download</p>
@@ -177,6 +165,37 @@
               </md-list-item>
             </md-list>
           </div>
+        </div>
+      </div>
+    </div>
+  </md-toolbar>
+  <md-toolbar class="md-dark">
+    <div class="md-toolbar-row">
+      <div class="md-toolbar-section-start">
+        <h3 class="md-title">Navbar with notification</h3>
+        <div class="md-collapse">
+          <div class="md-autocomplete">
+            <md-autocomplete
+              class="search has-white"
+              v-model="selectedEmployee"
+              :md-options="employees"
+              :md-open-on-focus="false"
+            >
+              <label>Search...</label>
+            </md-autocomplete>
+          </div>
+        </div>
+      </div>
+      <div class="md-toolbar-section-end">
+        <md-button
+          class="md-just-icon md-simple md-white md-toolbar-toggle"
+        >
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </md-button>
+
+        <div class="md-collapse">
           <md-list>
             <md-list-item href="javascript:void(0)">
               <p>Discover</p>
@@ -199,7 +218,7 @@
               </a>
             </li>
 
-            <li class="md-list-item" v-if="this.user.id">
+            <li class="md-list-item">
               <a
                 href="javascript:void(0)"
                 class="md-list-item-router md-list-item-container md-button-clean dropdown"
@@ -211,23 +230,23 @@
                       slot="title"
                       data-toggle="dropdown"
                     >
-                      <img :src="this.user.avatar" alt="Circle Image" />
+                      <img :src="img" alt="Circle Image" />
                     </div>
                     <ul class="dropdown-menu dropdown-menu-right">
-                      <li class="dropdown-header">{{this.user.id}}</li>
+                      <li class="dropdown-header">Dropdown header</li>
                       <li>
-                        <a href="#pablo" class="dropdown-item">Profile</a>
+                        <a href="#pablo" class="dropdown-item">Me</a>
                       </li>
                       <li>
-                        <a class="dropdown-item" @click="logout()"
-                          >Sign Out</a
+                        <a href="#pablo" class="dropdown-item"
+                          >Settings and other stuff</a
                         >
                       </li>
                       <li>
-                      	<md-button class="dropdown-item" @click="logout()">
-                      	  Log Out
-                      	</md-button>
-	                  </li>
+                        <a href="#pablo" class="dropdown-item"
+                          >Sign Out</a
+                        >
+                      </li>
                     </ul>
                   </drop-down>
                 </div>
@@ -235,27 +254,6 @@
             </li>
           </md-list>
         </div>
-        <modal v-if="isModalOn" @close="this.hideModal">
-          <template slot="header">
-            <h4 class="modal-title">{{ this.modalInfo.title }}</h4>
-            <md-button
-              class="md-simple md-just-icon md-round modal-default-button"
-              @click="this.hideModal"
-            >
-              <md-icon>clear</md-icon>
-            </md-button>
-          </template>
-
-          <template slot="body">
-            <p>{{ this.modalInfo.content }}</p>
-          </template>
-
-          <template slot="footer">
-            <md-button class="md-simple" v-if="isConfirmModal">Yes</md-button>
-            <md-button class="md-simple" v-if="isConfirmModal">No</md-button>
-            <md-button class="md-danger md-simple" v-if="!isConfirmModal" @click="this.hideModal">Close</md-button>
-          </template>
-        </modal>
       </div>
     </div>
   </md-toolbar>
@@ -283,10 +281,9 @@ export default {
   props: {
     type: {
       type: String,
-      default: "dark",
+      default: "white",
       validator(value) {
         return [
-          "dark",
           "white",
           "default",
           "primary",
@@ -300,42 +297,21 @@ export default {
     colorOnScroll: {
       type: Number,
       default: 0
-    },
+    }
   },
   data() {
     return {
       extraNavClasses: "",
-      toggledClass: false,
-      //window resize
-      wWidth: window.innerWidth,
-      wHeight: window.innerHeight,
-
-      selectedEmployee: "",
-      employees: [
-        "Jim Halpert",
-        "Dwight Schrute",
-        "Michael Scott",
-        "Pam Beesly",
-        "Angela Martin",
-        "Kelly Kapoor",
-        "Ryan Howard",
-        "Kevin Malone"
-      ]
+      toggledClass: false
     };
   },
   computed: {
-    isPublic() {
+    showDownload() {
       const excludedRoutes = ["login", "landing", "profile"];
       return excludedRoutes.every(r => r !== this.$route.name);
     }
   },
   methods: {
-	logout() {
-        this.showModal("CONFIRM", "로그아웃 하시겠습니까?", function() {
-	    	this.authUtils.logout();
-	    	this.$router.push('/');
-	    });
-	},
     bodyClick() {
       let bodyClick = document.getElementById("bodyClick");
 
@@ -379,19 +355,13 @@ export default {
       if (element_id) {
         element_id.scrollIntoView({ block: "end", behavior: "smooth" });
       }
-    },
-    handleResize(){
-      this.wWidth = window.innerWidth;
-      this.wHeight = window.innerHeight;
-    },
+    }
   },
   mounted() {
     document.addEventListener("scroll", this.scrollListener);
-    document.addEventListener("resize", this.handleResize);
   },
   beforeDestroy() {
     document.removeEventListener("scroll", this.scrollListener);
-    document.removeEventListener("resize", this.handleResize);
   }
 };
 </script>
